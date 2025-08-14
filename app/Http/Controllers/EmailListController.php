@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmailList;
 use Error;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -16,10 +17,22 @@ class EmailListController extends Controller
      */
     public function index()
     {
-        $emailListsPaginated = EmailList::query()->paginate();
+
+        $search = request()->search;
+
+        $emailListsPaginated = EmailList::query()
+            ->when(
+                $search,
+                fn(Builder $query) =>
+                $query
+                    ->where('title', 'like', "%$search%")
+                    ->orWhere('id', '=', "$search")
+            )->withCount('subscribers')
+            ->paginate();
 
         return Inertia::render('email-list/index', [
-            'emailListsPaginated' => $emailListsPaginated
+            'emailListsPaginated' => $emailListsPaginated,
+            'search' => $search
         ]);
     }
 

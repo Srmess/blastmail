@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\EmailList;
+use App\Models\Subscriber;
 use App\Models\User;
+use GuzzleHttp\Promise\Create;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -16,10 +19,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'teste@teste.dev',
-            'password' => Hash::make('123456'),
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'teste@teste.dev',
+        //     'password' => Hash::make('123456'),
+        // ]);
+
+        EmailList::factory()->count(50)->create()->each(function (EmailList $list) {
+            Subscriber::factory()->count(rand(50, 200))->create([
+                'email_list_id' => $list->id
+            ]);
+        });
     }
 }
