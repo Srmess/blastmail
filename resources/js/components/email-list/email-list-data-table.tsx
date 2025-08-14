@@ -24,7 +24,7 @@ const columns: ColumnDef<EmailList>[] = [
 
 export default function EmailListDataTable({ data, links }: { data: EmailList[]; links: Pagination<unknown>['links'] }) {
     return (
-        <div>
+        <div className="flex flex-col gap-6">
             <DataTable columns={columns} data={data} />
             <PaginationComponent links={links} />
         </div>
