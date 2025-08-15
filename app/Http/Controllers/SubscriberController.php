@@ -76,8 +76,9 @@ class SubscriberController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Subscriber $subscriber)
+    public function destroy(mixed $emailList, Subscriber $subscriber)
     {
-        //
+        $subscriber->delete();
+        return back();
     }
 }
