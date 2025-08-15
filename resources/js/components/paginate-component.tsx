@@ -13,7 +13,7 @@ export function PaginationComponent({ links }: PaginationComponent) {
                     if (index === 0) {
                         return (
                             <PaginationItem key={index}>
-                                <PaginationPrevious href={link.url || '#'} />
+                                <PaginationPrevious href={link.url || ''} />
                             </PaginationItem>
                         );
                     }
@@ -21,14 +21,14 @@ export function PaginationComponent({ links }: PaginationComponent) {
                     if (links.length === index + 1) {
                         return (
                             <PaginationItem key={index}>
-                                <PaginationNext href={link.url || '#'} />
+                                <PaginationNext href={link.url || ''} />
                             </PaginationItem>
                         );
                     }
 
                     return (
                         <PaginationItem key={index}>
-                            <PaginationLink href={link.url || '#'} isActive={link.active}>
+                            <PaginationLink href={link.url || ''} isActive={link.active}>
                                 {link.label}
                             </PaginationLink>
                         </PaginationItem>

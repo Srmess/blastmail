@@ -23,8 +23,6 @@ export default function Index() {
     const { props } = usePage<LaravelPageProps>();
     const { emailListsPaginated, search } = props;
 
-    console.log(emailListsPaginated);
-
     const emailListIsEmpty = emailListsPaginated.data.length === 0 && isNull(search);
 
     return (

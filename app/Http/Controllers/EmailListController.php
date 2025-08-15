@@ -26,9 +26,9 @@ class EmailListController extends Controller
                 fn(Builder $query) =>
                 $query
                     ->where('title', 'like', "%$search%")
-                    ->orWhere('id', '=', "$search")
+                    ->orWhere('id', '=', $search)
             )->withCount('subscribers')
-            ->paginate();
+            ->paginate()->appends(compact('search'));
 
         return Inertia::render('email-list/index', [
             'emailListsPaginated' => $emailListsPaginated,

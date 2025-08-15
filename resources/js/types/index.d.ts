@@ -64,7 +64,7 @@ export interface Pagination<T> {
 
 export interface EmailList {
     id: number;
-    name: string;
+    title: string;
     subscribers_count?: number;
     subscribers: Subscriber[];
 }
@@ -73,4 +73,5 @@ export interface Subscriber {
     id: number;
     name: string;
     email: string;
+    email_list?: EmailList;
 }
