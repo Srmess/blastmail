@@ -15,16 +15,17 @@ class SubscriberController extends Controller
      */
     public function index(EmailList $emailList)
     {
-
         $search = request()->search;
-        $subscribersPaginated = $emailList->subscribers()->when(
-            $search,
-            fn(Builder $query) =>
-            $query
-                ->where('name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%")
-                ->orWhere('id', '=', $search)
-        )->paginate();
+
+        $subscribersPaginated = $emailList->subscribers()
+            ->when($search, function (Builder $query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('id', $search);
+                });
+            })->paginate()->appends(compact('search'));
+
 
         return Inertia::render(
             'subscribers/index',
