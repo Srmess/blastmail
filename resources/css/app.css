@@ -130,6 +130,22 @@
     --sidebar-ring: oklch(0.439 0 0);
 }
 
+.ql-snow {
+    @apply border-input!;
+}
+
+.custom-quill .ql-toolbar {
+    @apply rounded-t-lg border-input;
+}
+
+.custom-quill .ql-container {
+    @apply rounded-b-lg border-input;
+}
+
+.custom-quill .ql-editor {
+    @apply min-h-[200px] border-input p-4 text-sm leading-relaxed;
+}
+
 @layer base {
     * {
         @apply border-border;

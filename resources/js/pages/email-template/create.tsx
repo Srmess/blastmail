@@ -1,4 +1,6 @@
 import InputError from '@/components/input-error';
+import { QuillEditor } from '@/components/rich-text';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -42,6 +44,8 @@ export default function Create() {
             <div className="flex h-full w-full items-center justify-center">
                 <form method="POST" className="flex w-full max-w-[500px] flex-col gap-6" onSubmit={submit}>
                     <div className="grid gap-6">
+                        <QuillEditor />
+
                         <div className="grid gap-2">
                             <Label htmlFor="title">Name</Label>
                             <Input
