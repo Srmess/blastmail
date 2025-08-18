@@ -48,8 +48,8 @@ class SubscriberController extends Controller
     public function store(EmailList $emailList)
     {
         $payload = request()->validate([
-            'name' => ['string', 'required'],
-            'email' => ['string', 'required', 'email', Rule::unique('subscribers')->where('email_list_id', $emailList->id)]
+            'name' => ['required', 'string'],
+            'email' => ['required', 'string', 'email', Rule::unique('subscribers')->where('email_list_id', $emailList->id)]
         ]);
 
 

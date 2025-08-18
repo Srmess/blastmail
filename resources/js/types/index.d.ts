@@ -75,3 +75,9 @@ export interface Subscriber {
     email: string;
     email_list?: EmailList;
 }
+
+export interface EmailTemplate {
+    id: number;
+    title: string;
+    body?: string;
+}
