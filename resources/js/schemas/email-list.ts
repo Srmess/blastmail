@@ -13,8 +13,6 @@ export const ManageEmailListSchema = z.object({
         .refine((files) => files instanceof FileList && Array.from(files).every((file) => file.size <= 5 * 1024 * 1024), {
             message: 'File must be smaller than 5MB',
         }),
-
-    // any().refine((files) => files?.length > 0, 'File is required'),
 });
 
 export type ManageEmailListInfer = z.infer<typeof ManageEmailListSchema>;

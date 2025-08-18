@@ -6,6 +6,7 @@ use App\Models\EmailList;
 use App\Models\Subscriber;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class SubscriberController extends Controller
@@ -36,17 +37,25 @@ class SubscriberController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(EmailList $emailList)
     {
-        return Inertia::render('subscribers/create');
+        return Inertia::render('subscribers/create', compact('emailList'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EmailList $emailList)
     {
-        //
+        $payload = request()->validate([
+            'name' => ['string', 'required'],
+            'email' => ['string', 'required', 'email', Rule::unique('subscribers')->where('email_list_id', $emailList->id)]
+        ]);
+
+
+        $emailList->subscribers()->create($payload);
+
+        return to_route('subscribers.index', $emailList->id);
     }
 
     /**

@@ -48,7 +48,7 @@ export default function Index() {
                     <div className="flex w-full max-w-[1000px] flex-col gap-6">
                         <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
                             <Link href={route('subscribers.create', emailList.id)}>
-                                <Button className="max-sm:w-full">Create a new email list</Button>
+                                <Button className="max-sm:w-full">Create a new subscriber</Button>
                             </Link>
                             <form action={route('subscribers.index', emailList.id)}>
                                 {/* [ ] Adicionar debounce e remover form */}

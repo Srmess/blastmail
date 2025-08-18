@@ -3,69 +3,88 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { ManageEmailListInfer, ManageEmailListSchema } from '@/schemas/email-list';
-import { BreadcrumbItem } from '@/types';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { ManageSubscriberInfer } from '@/schemas/subscriber';
+import { BreadcrumbItem, EmailList } from '@/types';
 import { Inertia } from '@inertiajs/inertia';
-import { Head } from '@inertiajs/react';
-import { useForm } from 'react-hook-form';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
 import { toast } from 'sonner';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Email List',
-        href: '/email-list',
-    },
-    {
-        title: 'Create new Email List',
-        href: '/email-list/create',
-    },
-];
+const getDinamicBreadcrumbs = ({ emailListName, emailListId }: { emailListName: string; emailListId: number }) => {
+    return [
+        {
+            title: 'Email List',
+            href: '/email-list',
+        },
+        {
+            title: emailListName,
+            href: `/email-list/${emailListId}`,
+        },
+        {
+            title: `Subscribers`,
+            href: `/email-list/${emailListId}/subscribers`,
+        },
+        {
+            title: `Create`,
+            href: `/email-list/${emailListId}/subscribers/create`,
+        },
+    ] as BreadcrumbItem[];
+};
+
+type LaravelPageProps = {
+    emailList: EmailList;
+};
 
 export default function Create() {
-    const { register, reset, formState, handleSubmit } = useForm<ManageEmailListInfer>({
-        resolver: zodResolver(ManageEmailListSchema),
-        defaultValues: {
-            title: '',
-        },
+    const { props } = usePage<LaravelPageProps>();
+    const { emailList } = props;
+    const breadCrumbs = getDinamicBreadcrumbs({ emailListName: emailList.title, emailListId: emailList.id });
+
+    const { post, errors, setData, data, reset, processing } = useForm<ManageSubscriberInfer>({
+        email: '',
+        name: '',
     });
 
-    const submit = (data: ManageEmailListInfer) => {
-        const payload = {
-            ...data,
-            subscribersFile: data.subscribersFile[0],
-        };
-
-        Inertia.post(route('email-list.store'), payload, {
-            onError: (error) => {
-                alert('erro');
-                console.log(error);
-            },
-            onSuccess: (response) => {
-                console.log(response);
-                toast.success('Email link created!');
-            },
-            onFinish: () => {
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        post(route('subscribers.create', emailList.id), {
+            onSuccess: () => {
+                toast.success('Subscriber created successfully!');
                 reset();
             },
         });
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AppLayout breadcrumbs={breadCrumbs}>
             <Head title="Create new Email List" />
             <div className="flex h-full w-full items-center justify-center">
-                <form method="POST" className="flex w-full max-w-[500px] flex-col gap-6" onSubmit={handleSubmit(submit)} encType="multpart/form-data">
+                <form method="POST" className="flex w-full max-w-[500px] flex-col gap-6" onSubmit={submit}>
                     <div className="grid gap-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="title">Name</Label>
-                            <Input id="title" type="title" autoFocus autoComplete="title" placeholder="Type here" {...register('title')} />
-                            <InputError message={formState.errors.title?.message} />
+                            <Label htmlFor="name">Name</Label>
+                            <Input
+                                id="name"
+                                autoFocus
+                                autoComplete="name"
+                                placeholder="Type here"
+                                value={data.name}
+                                onChange={(e) => setData('name', e.target.value)}
+                                disabled={processing}
+                            />
+                            <InputError message={errors.name} />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="subscribersFile">Subscribers List File</Label>
-                            <Input id="subscribersFile" type="file" placeholder="Type here" accept=".csv" {...register('subscribersFile')} />
-                            {formState.errors.subscribersFile?.message && <InputError message={String(formState.errors.subscribersFile?.message)} />}
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                id="email"
+                                autoComplete="email"
+                                placeholder="Type here"
+                                value={data.email}
+                                onChange={(e) => setData('email', e.target.value)}
+                                disabled={processing}
+                            />
+                            <InputError message={errors.email} />
                         </div>
 
                         <div className="flex items-center gap-4">
@@ -75,7 +94,7 @@ export default function Create() {
                                 className="mt-4 w-full"
                                 tabIndex={4}
                                 onClick={() => {
-                                    Inertia.get(route('email-list.index'));
+                                    Inertia.get(route('subscribers.index'));
                                 }}
                             >
                                 Cancel
