@@ -17,8 +17,8 @@ class EmailTemplateFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->name(),
-            'body' => fake()->randomHtml()
+            'title' => fake()->word(5, true),
+            'body' => fake()->randomHtml(),
         ];
     }
 }
