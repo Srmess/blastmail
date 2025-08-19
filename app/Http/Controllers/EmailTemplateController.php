@@ -51,7 +51,7 @@ class EmailTemplateController extends Controller
      */
     public function show(EmailTemplate $emailTemplate)
     {
-        //
+        return Inertia::render('email-template/show', compact('emailTemplate'));
     }
 
     /**

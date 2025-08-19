@@ -1,7 +1,7 @@
 import { EmailTemplate, Pagination } from '@/types';
 import { Link, useForm } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Pencil, Trash2 } from 'lucide-react';
+import { ExternalLink, Pencil, Trash2 } from 'lucide-react';
 import { PaginationComponent } from '../paginate-component';
 import { DataTable } from '../table-component';
 import { Button } from '../ui/button';
@@ -21,6 +21,12 @@ const columns: ColumnDef<EmailTemplate>[] = [
         cell: ({ row }) => {
             return (
                 <div className="flex items-center gap-3">
+                    <Link href={route('email-template.show', row.original.id)}>
+                        <Button variant={'ghost'} size={'icon'}>
+                            <ExternalLink />
+                        </Button>
+                    </Link>
+
                     <Link href={route('email-template.edit', row.original.id)}>
                         <Button variant={'ghost'} size={'icon'}>
                             <Pencil />

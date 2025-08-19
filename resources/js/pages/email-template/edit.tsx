@@ -1,4 +1,5 @@
 import InputError from '@/components/input-error';
+import { RichTextEditor } from '@/components/rich-text-editor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -70,16 +71,9 @@ export default function Edit() {
                             />
                             <InputError message={errors.title} />
                         </div>
-                        <div className="grid gap-2">
+                        <div className="grid h-full gap-2">
                             <Label htmlFor="body">body</Label>
-                            <Input
-                                id="body"
-                                autoComplete="body"
-                                placeholder="Type here"
-                                value={data.body}
-                                onChange={(e) => setData('body', e.target.value)}
-                                disabled={processing}
-                            />
+                            <RichTextEditor setValue={(val) => setData('body', val)} value={data.body} />
                             <InputError message={errors.body} />
                         </div>
 
