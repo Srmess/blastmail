@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campaign;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CampaignController extends Controller
 {
@@ -12,7 +14,17 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        //
+        $search = request()->search;
+
+        $campaignsPaginated = Campaign::query()->when(
+            $search,
+            fn(Builder $query) =>
+            $query
+                ->where('name', 'like', "%$search%")
+                ->orWhere('id', '=', $search)
+        )->paginate()->appends(compact('search'));
+
+        return Inertia::render('campaigns/index', compact(['search', 'campaignsPaginated']));
     }
 
     /**

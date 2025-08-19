@@ -81,3 +81,21 @@ export interface EmailTemplate {
     title: string;
     body?: string;
 }
+
+export interface Campaign {
+    id: number;
+    email_list_id: number;
+    email_template_id: number;
+
+    name: string;
+    name: string;
+    subject: string;
+    track_click: boolean;
+    track_open: boolean;
+    body: string;
+    created_at: Date;
+    updated_at: Date;
+
+    emailList?: EmailList;
+    emailTemplate?: EmailTemplate;
+}

@@ -15,12 +15,16 @@ class CampaignSeeder extends Seeder
      */
     public function run(): void
     {
-        $emailList = EmailList::query()->inRandomOrder()->first();
-        $emailTemplate = EmailTemplate::query()->inRandomOrder()->first();
 
-        Campaign::factory()->count(rand(10, 25))->create([
-            'email_list_id' => $emailList->id,
-            'email_template_id' => $emailTemplate->id,
-        ]);
+
+        for ($i = 0; $i < rand(10, 25); $i++) {
+            $emailList = EmailList::query()->inRandomOrder()->first();
+            $emailTemplate = EmailTemplate::query()->inRandomOrder()->first();
+
+            Campaign::factory()->create([
+                'email_list_id' => $emailList->id,
+                'email_template_id' => $emailTemplate->id,
+            ]);
+        }
     }
 }
