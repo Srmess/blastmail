@@ -130,6 +130,20 @@
     --sidebar-ring: oklch(0.439 0 0);
 }
 
+.custom-quill .ql-toolbar button.ql-active .ql-stroke,
+.custom-quill .ql-toolbar .ql-picker-label.ql-active .ql-stroke .ql-stroke:not(.ql-transparent):not(.ql-color-label) {
+    @apply stroke-slate-300!;
+}
+
+.custom-quill .ql-toolbar button.ql-active .ql-fill,
+.custom-quill .ql-toolbar .ql-picker-label.ql-active .ql-fill {
+    @apply fill-slate-300!;
+}
+
+.custom-quill .ql-toolbar span.ql-active .ql-stroke:not(.ql-transparent):not(.ql-color-label) {
+    @apply stroke-slate-300!;
+}
+
 .ql-snow {
     @apply border-input!;
 }
