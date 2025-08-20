@@ -160,6 +160,10 @@
     @apply h-full min-h-[200px] scroll-m-1.5 border-input p-4 text-sm leading-relaxed [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-4xl [&::-webkit-scrollbar-thumb]:bg-gray-400;
 }
 
+input[type='date']::-webkit-calendar-picker-indicator {
+    @apply right-10 size-5 cursor-pointer invert;
+}
+
 @layer base {
     * {
         @apply border-border;
