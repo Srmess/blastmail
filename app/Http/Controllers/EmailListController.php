@@ -114,6 +114,7 @@ class EmailListController extends Controller
      */
     public function destroy(EmailList $emailList)
     {
-        //
+        $emailList->delete();
+        return back();
     }
 }

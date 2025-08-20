@@ -18,3 +18,4 @@ require __DIR__ . '/email-list.php';
 require __DIR__ . '/email-template.php';
 require __DIR__ . '/settings.php';
 require __DIR__ . '/campaigns.php';
+require __DIR__ . '/trash.php';
