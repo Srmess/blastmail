@@ -1,10 +1,8 @@
 import { Campaign, Pagination } from '@/types';
-import { useForm } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Trash2, Undo2 } from 'lucide-react';
 import { PaginationComponent } from '../paginate-component';
 import { DataTable } from '../table-component';
-import { Button } from '../ui/button';
+import { DeleteEntityButton, RestoreEntityButton } from './action-table-buttons';
 
 const columns: ColumnDef<Campaign>[] = [
     {
@@ -21,8 +19,8 @@ const columns: ColumnDef<Campaign>[] = [
         cell: ({ row }) => {
             return (
                 <div className="flex items-center gap-3">
-                    <RestoreCampaignButton campaignId={row.original.id} />
-                    <DeleteCampaignButton campaignId={row.original.id} />
+                    <RestoreEntityButton entityId={row.original.id} restoreRoute="trash.campaigns.restore" />
+                    <DeleteEntityButton entityId={row.original.id} deleteRoute="trash.campaigns.hardDelete" />
                 </div>
             );
         },
@@ -37,37 +35,3 @@ export default function DeletedCampaignsDataTable({ data, links }: { data: Campa
         </div>
     );
 }
-
-const DeleteCampaignButton = ({ campaignId }: { campaignId: number }) => {
-    const { delete: destroy, processing } = useForm();
-
-    return (
-        <Button
-            variant={'destructive'}
-            size={'icon'}
-            onClick={() => {
-                destroy(route('trash.campaigns.hardDelete', campaignId));
-            }}
-            isLoading={processing}
-        >
-            <Trash2 />
-        </Button>
-    );
-};
-
-const RestoreCampaignButton = ({ campaignId }: { campaignId: number }) => {
-    const { delete: patch, processing } = useForm();
-
-    return (
-        <Button
-            variant={'ghost'}
-            size={'icon'}
-            onClick={() => {
-                patch(route('trash.campaigns.restore', campaignId));
-            }}
-            isLoading={processing}
-        >
-            <Undo2 />
-        </Button>
-    );
-};

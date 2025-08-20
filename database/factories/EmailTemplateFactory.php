@@ -19,6 +19,7 @@ class EmailTemplateFactory extends Factory
         return [
             'title' => fake()->word(5, true),
             'body' => fake()->randomHtml(),
+            'deleted_at' => fake()->boolean() ? fake()->dateTimeBetween('-1 month', 'now') : null,
         ];
     }
 }

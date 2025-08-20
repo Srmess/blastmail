@@ -29,6 +29,7 @@ class CampaignFactory extends Factory
             'body' => fake()->randomHtml(),
             'created_at' => fake()->dateTimeBetween('-1 month', 'now'),
             'updated_at' => fake()->dateTimeBetween('-1 month', 'now'),
+            'deleted_at' => fake()->boolean() ? fake()->dateTimeBetween('-1 month', 'now') : null,
         ];
     }
 }

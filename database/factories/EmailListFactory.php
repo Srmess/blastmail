@@ -18,6 +18,7 @@ class EmailListFactory extends Factory
     {
         return [
             'title' => fake()->word(),
+            'deleted_at' => fake()->boolean() ? fake()->dateTimeBetween('-1 month', 'now') : null,
         ];
     }
 }

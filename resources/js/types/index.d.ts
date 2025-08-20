@@ -67,6 +67,7 @@ export interface EmailList {
     title: string;
     subscribers_count?: number;
     subscribers: Subscriber[];
+    deleted_at?: Date;
 }
 
 export interface Subscriber {
@@ -80,6 +81,7 @@ export interface EmailTemplate {
     id: number;
     title: string;
     body?: string;
+    deleted_at?: Date;
 }
 
 export interface Campaign {
@@ -95,6 +97,7 @@ export interface Campaign {
     body: string;
     created_at: Date;
     updated_at: Date;
+    deleted_at?: Date;
 
     emailList?: EmailList;
     emailTemplate?: EmailTemplate;
