@@ -1,16 +1,16 @@
-import { Campaign, Pagination } from '@/types';
+import { EmailTemplate, Pagination } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { PaginationComponent } from '../paginate-component';
 import { DataTable } from '../table-component';
 import { DeleteEntityButton, RestoreEntityButton } from './action-table-buttons';
 
-const columns: ColumnDef<Campaign>[] = [
+const columns: ColumnDef<EmailTemplate>[] = [
     {
         accessorKey: 'id',
         header: '#',
     },
     {
-        accessorKey: 'name',
+        accessorKey: 'title',
         header: 'Name',
     },
     {
@@ -27,15 +27,15 @@ const columns: ColumnDef<Campaign>[] = [
         cell: ({ row }) => {
             return (
                 <div className="flex items-center gap-3">
-                    <RestoreEntityButton entityId={row.original.id} restoreRoute="trash.campaigns.restore" />
-                    <DeleteEntityButton entityId={row.original.id} deleteRoute="trash.campaigns.hardDelete" />
+                    <RestoreEntityButton entityId={row.original.id} restoreRoute="trash.email-templates.restore" />
+                    <DeleteEntityButton entityId={row.original.id} deleteRoute="trash.email-templates.hardDelete" />
                 </div>
             );
         },
     },
 ];
 
-export default function DeletedCampaignsDataTable({ data, links }: { data: Campaign[]; links: Pagination<unknown>['links'] }) {
+export default function DeletedEmailTemplateDataTable({ data, links }: { data: EmailTemplate[]; links: Pagination<unknown>['links'] }) {
     return (
         <div className="flex flex-col gap-6">
             <DataTable columns={columns} data={data} />

@@ -27,10 +27,10 @@ export default function TrashedCapaigns() {
                 )}
             >
                 {campaignsIsEmpty ? (
-                    <div className="flex flex-col items-center justify-center gap-4">
+                    <div className="flex flex-col items-center justify-center gap-4 opacity-60">
                         <PackageOpen className="size-20" />
                         <div className="flex flex-col items-center gap-2">
-                            <p className="text-2xl font-bold">No Campaigns deleted yet!</p>
+                            <p className="text-2xl font-bold">No Campaigns on trash yet!</p>
                             <p className="text-[16px]">Restore campaigns should appear here.</p>
                         </div>
                     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmailTemplate;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,7 +16,13 @@ class EmailTemplateController extends Controller
     {
         $search = request()->search;
 
-        $emailTemplatesPaginated = EmailTemplate::query()->paginate();
+        $emailTemplatesPaginated = EmailTemplate::query()->when(
+            $search,
+            fn(Builder $query) =>
+            $query
+                ->where('title', 'like', "%$search%")
+                ->orWhere('id', '=', $search)
+        )->paginate()->appends(compact('search'));
 
         return Inertia::render('email-template/index', [
             'search' => $search,

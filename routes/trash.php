@@ -15,7 +15,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('trash/email-lists/{emailList}', [TrashController::class, 'restoreEmailList'])->withTrashed()->name('trash.email-lists.restore');
     Route::delete('trash/email-lists/{emailList}', [TrashController::class, 'hardDeleteEmailList'])->withTrashed()->name('trash.email-lists.hardDelete');
 
-    Route::get('trash/email-templates', [TrashController::class, 'indexEmailTempaltes'])->withTrashed()->name('trash.email-templates');
-    Route::put('trash/email-templates/{EmailTemplate}', [TrashController::class, 'restoreEmailTempalte'])->withTrashed()->name('trash.email-templates.restore');
-    Route::delete('trash/email-templates/{EmailTemplate}', [TrashController::class, 'hardDeleteEmailTempalte'])->withTrashed()->name('trash.email-templates.hardDelete');
+    Route::get('trash/email-templates', [TrashController::class, 'indexEmailTemplates'])->withTrashed()->name('trash.email-templates');
+    Route::patch('trash/email-templates/{emailTemplate}', [TrashController::class, 'restoreEmailTemplate'])->withTrashed()->name('trash.email-templates.restore');
+    Route::delete('trash/email-templates/{emailTemplate}', [TrashController::class, 'hardDeleteEmailTemplate'])->withTrashed()->name('trash.email-templates.hardDelete');
 });

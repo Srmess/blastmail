@@ -1,50 +1,51 @@
-import DeletedEmailListDataTable from '@/components/trash/deleted-email-list-data-table';
+import DeletedEmailTemplateDataTable from '@/components/trash/deleted-email-template-data-table';
 import { Input } from '@/components/ui/input';
 import { TrashLayout } from '@/layouts/trash/trash-layout';
 import { cn } from '@/lib/utils';
-import { EmailList, Pagination } from '@/types';
+import { EmailTemplate, Pagination } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { isNull } from 'lodash';
 import { PackageOpen } from 'lucide-react';
 
 type LaravelPageProps = {
-    deletedEmailListsPaginated: Pagination<EmailList>;
+    deletedEmailTemplatesPaginated: Pagination<EmailTemplate>;
     search: string;
 };
 
-export default function EmailLists() {
+export default function EmailTemplates() {
     const { props } = usePage<LaravelPageProps>();
-    const { deletedEmailListsPaginated, search } = props;
+    const { deletedEmailTemplatesPaginated, search } = props;
 
-    const emailListIsEmpty = deletedEmailListsPaginated.data.length === 0 && isNull(search);
+    const emailTemplatesIsEmpty = deletedEmailTemplatesPaginated.data.length === 0 && isNull(search);
 
     return (
         <TrashLayout>
             <div
                 className={cn(
                     'flex h-full flex-1 flex-col items-center gap-4 overflow-x-auto rounded-xl p-4',
-                    emailListIsEmpty && 'items-center justify-center',
+                    emailTemplatesIsEmpty && 'items-center justify-center',
                 )}
             >
-                {emailListIsEmpty ? (
+                {emailTemplatesIsEmpty ? (
                     <div className="flex flex-col items-center justify-center gap-4 opacity-60">
                         <PackageOpen className="size-20" />
                         <div className="flex flex-col items-center gap-2">
-                            <p className="text-2xl font-bold">No Email Lists on trash yet!</p>
-                            <p className="text-[16px]">Restore Email List should appear here.</p>
+                            <p className="text-2xl font-bold">No Email Templates on trash yet!</p>
+                            <p className="text-[16px]">Restore Email Template should appear here.</p>
                         </div>
                     </div>
                 ) : (
                     <div className="flex w-full max-w-[1000px] flex-col gap-6">
                         <div className="flex w-full max-w-[1000px] flex-col gap-6">
                             <div className="flex justify-end max-sm:flex-col max-sm:gap-4">
-                                <form action={route('trash.email-lists')}>
+                                <form action={route('trash.email-templates')}>
                                     {/*[ ] Adicionar debounce e remover form*/}
                                     <Input name="search" placeholder="Search..." className="max-w-80" defaultValue={search} />
                                 </form>
                             </div>
                         </div>
-                        <DeletedEmailListDataTable data={deletedEmailListsPaginated.data} links={deletedEmailListsPaginated?.links} />
+
+                        <DeletedEmailTemplateDataTable data={deletedEmailTemplatesPaginated.data} links={deletedEmailTemplatesPaginated.links} />
                     </div>
                 )}
             </div>
