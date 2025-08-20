@@ -1,7 +1,7 @@
 import { EmailList, Pagination } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Trash2 } from 'lucide-react';
 import { PaginationComponent } from '../paginate-component';
 import { DataTable } from '../table-component';
 import { Button } from '../ui/button';
@@ -24,11 +24,14 @@ const columns: ColumnDef<EmailList>[] = [
         header: 'Actions',
         cell: ({ row }) => {
             return (
-                <Link href={route('subscribers.index', row.original.id)}>
-                    <Button variant={'ghost'} size={'icon'}>
-                        <ExternalLink />
-                    </Button>
-                </Link>
+                <div className="flex items-center gap-3">
+                    <Link href={route('subscribers.index', row.original.id)}>
+                        <Button variant={'ghost'} size={'icon'}>
+                            <ExternalLink />
+                        </Button>
+                    </Link>
+                    <DeleteEmailListButton emailListId={row.original.id} />
+                </div>
             );
         },
     },
@@ -42,3 +45,20 @@ export default function EmailListDataTable({ data, links }: { data: EmailList[];
         </div>
     );
 }
+
+const DeleteEmailListButton = ({ emailListId }: { emailListId: number }) => {
+    const { delete: destroy, processing } = useForm();
+
+    return (
+        <Button
+            variant={'destructive'}
+            size={'icon'}
+            onClick={() => {
+                destroy(route('email-list.destroy', emailListId));
+            }}
+            isLoading={processing}
+        >
+            <Trash2 />
+        </Button>
+    );
+};

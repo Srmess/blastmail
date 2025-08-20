@@ -87,7 +87,7 @@ class SubscriberController extends Controller
      */
     public function destroy(mixed $emailList, Subscriber $subscriber)
     {
-        $subscriber->delete();
+        $subscriber->forceDelete();
         return back();
     }
 }

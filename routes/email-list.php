@@ -8,6 +8,7 @@ Route::middleware('auth')->group(function () {
     Route::get('email-list', [EmailListController::class, 'index'])->name('email-list.index');
     Route::get('email-list/create', [EmailListController::class, 'create'])->name('email-list.create');
     Route::post('email-list/store', [EmailListController::class, 'store'])->name('email-list.store');
+    Route::delete('email-list/{emailList}', [EmailListController::class, 'destroy'])->name('email-list.destroy');
 
     Route::get('email-list/{emailList}/subscribers', [SubscriberController::class, 'index'])->name('subscribers.index');
     Route::get('email-list/{emailList}/subscribers/create', [SubscriberController::class, 'create'])->name('subscribers.create');
