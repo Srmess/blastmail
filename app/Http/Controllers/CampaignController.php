@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CampaignStoreRequest;
 use App\Models\Campaign;
+use App\Models\EmailList;
+use App\Models\EmailTemplate;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -33,7 +35,11 @@ class CampaignController extends Controller
      */
     public function create()
     {
-        return Inertia::render('campaigns/create');
+        $emailLists = EmailList::query()->select(['id', 'title'])->orderBy('title')->get();
+        $emailTemplates = EmailTemplate::query()->select(['id', 'title'])->orderBy('title')->get();
+
+
+        return Inertia::render('campaigns/create', compact(['emailLists', 'emailTemplates']));
     }
 
     /**

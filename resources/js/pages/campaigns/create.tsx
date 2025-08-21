@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { ManageCampaignInfer, ManageCampaignSchema } from '@/schemas/campaign';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, EmailList, EmailTemplate } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Head, Link, useForm as inertiaUseForm } from '@inertiajs/react';
 import { useState } from 'react';
@@ -21,14 +21,26 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Create() {
+type LaravelPageProps = {
+    emailLists: EmailList[];
+    emailTemplates: EmailTemplate[];
+};
+
+export default function Create({ emailLists, emailTemplates }: LaravelPageProps) {
     const [step, setStep] = useState<'setup' | 'body' | 'schedule'>('setup');
 
     const { post, transform, data } = inertiaUseForm<ManageCampaignInfer>();
 
+    const emailListOptions = emailLists?.map(({ id, title }) => {
+        return { label: title, value: `${id}` };
+    });
+
+    const emailTemplateOptions = emailTemplates?.map(({ id, title }) => {
+        return { label: title, value: `${id}` };
+    });
+
     const form = useForm<ManageCampaignInfer>({
         resolver: zodResolver(ManageCampaignSchema),
-        mode: 'onSubmit',
         defaultValues: {
             name: '',
             subject: '',
@@ -88,7 +100,9 @@ export default function Create() {
                     <Card className="w-full p-5">
                         <div className="flex justify-center">
                             <form method="POST" className="flex w-full flex-col gap-6">
-                                {step === 'setup' && <SetupForm form={form} />}
+                                {step === 'setup' && (
+                                    <SetupForm form={form} emailListOptions={emailListOptions} emailTemplateOptions={emailTemplateOptions} />
+                                )}
                                 {step === 'body' && <BodyForm form={form} />}
                                 {step === 'schedule' && <ScheduleForm form={form} />}
                             </form>

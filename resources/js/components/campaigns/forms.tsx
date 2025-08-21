@@ -2,6 +2,7 @@ import { ManageCampaignInfer } from '@/schemas/campaign';
 import { UseFormReturn } from 'react-hook-form';
 import InputError from '../input-error';
 import { RichTextEditor } from '../rich-text-editor';
+import { Checkbox } from '../ui/checkbox';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -10,9 +11,12 @@ interface FormProps {
     form: UseFormReturn<ManageCampaignInfer>;
 }
 
-const bodyOptions = [1, 2, 3, 4, 5];
+interface SelectOptions {
+    emailListOptions: Array<{ label: string; value: string }>;
+    emailTemplateOptions: Array<{ label: string; value: string }>;
+}
 
-export const SetupForm = ({ form }: FormProps) => {
+export const SetupForm = ({ form, emailListOptions, emailTemplateOptions }: FormProps & SelectOptions) => {
     const { register, formState, setValue, watch } = form;
 
     return (
@@ -37,13 +41,11 @@ export const SetupForm = ({ form }: FormProps) => {
                             <SelectValue placeholder="Select an email list" />
                         </SelectTrigger>
                         <SelectContent>
-                            {bodyOptions.map((option) => {
-                                return (
-                                    <SelectItem value={`${option}`} key={option}>
-                                        {option}
-                                    </SelectItem>
-                                );
-                            })}
+                            {emailListOptions.map(({ label, value }) => (
+                                <SelectItem value={`${value}`} key={value}>
+                                    {label}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                     <InputError message={formState.errors.email_list_id?.message} />
@@ -55,16 +57,26 @@ export const SetupForm = ({ form }: FormProps) => {
                             <SelectValue placeholder="Select an email list" />
                         </SelectTrigger>
                         <SelectContent>
-                            {bodyOptions.map((option) => {
-                                return (
-                                    <SelectItem value={`${option}`} key={option}>
-                                        {option}
-                                    </SelectItem>
-                                );
-                            })}
+                            {emailTemplateOptions.map(({ label, value }) => (
+                                <SelectItem value={`${value}`} key={value}>
+                                    {label}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                     <InputError message={formState.errors.email_template_id?.message} />
+                </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-3">
+                    <Checkbox id="track_click" className="size-5" onCheckedChange={(val) => setValue('track_click', Boolean(val))} />
+                    <Label htmlFor="track_click">Track Click</Label>
+                </div>
+
+                <div className="flex items-center gap-3">
+                    <Checkbox id="track_open" className="size-5" onCheckedChange={(val) => setValue('track_open', Boolean(val))} />
+                    <Label htmlFor="track_open">Track Open</Label>
                 </div>
             </div>
         </div>
