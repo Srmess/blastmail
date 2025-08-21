@@ -61,6 +61,11 @@ class EmailTemplateController extends Controller
         return Inertia::render('email-template/show', compact('emailTemplate'));
     }
 
+    public function get(EmailTemplate $emailTemplate)
+    {
+        return response()->json($emailTemplate, 200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

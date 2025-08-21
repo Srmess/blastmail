@@ -29,7 +29,7 @@ class CampaignStoreRequest extends FormRequest
             'track_click' => ['nullable'],
             'track_open' => ['nullable'],
             'body' => ['required'],
-            'send_at' => ['required', 'date', 'after_or_equal:now'],
+            'send_at' => ['required', 'date'],
         ];
     }
 }

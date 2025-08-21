@@ -7,6 +7,7 @@ import { ManageCampaignInfer, ManageCampaignSchema } from '@/schemas/campaign';
 import { BreadcrumbItem, EmailList, EmailTemplate } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Head, Link, useForm as inertiaUseForm } from '@inertiajs/react';
+import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -56,6 +57,14 @@ export default function Create({ emailLists, emailTemplates }: LaravelPageProps)
 
             if (!isValidated) {
                 return;
+            }
+
+            const templateId = form.watch('email_template_id');
+
+            if (templateId) {
+                await axios
+                    .get(route('email-template.get', templateId))
+                    .then((response) => form.reset({ ...form.watch(), body: response.data.body }));
             }
 
             setStep('body');
@@ -120,7 +129,9 @@ export default function Create({ emailLists, emailTemplates }: LaravelPageProps)
                                     type="button"
                                     variant="secondary"
                                     className="w-full"
-                                    onClick={() => setStep((step) => (step === 'body' ? 'setup' : 'body'))}
+                                    onClick={() => {
+                                        setStep((step) => (step === 'body' ? 'setup' : 'body'));
+                                    }}
                                 >
                                     Cancel
                                 </Button>
