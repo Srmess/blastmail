@@ -50,7 +50,7 @@ export const SetupForm = ({ form }: FormProps) => {
                 </div>
                 <div className="grid w-full gap-2">
                     <Label htmlFor="email_template_id">Template</Label>
-                    <Select onValueChange={(val) => setValue('email_template_id', val)} defaultValue={watch('email_template_id')}>
+                    <Select onValueChange={(val) => setValue('email_template_id', val)} defaultValue={watch('email_template_id') || ''}>
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select an email list" />
                         </SelectTrigger>
@@ -91,9 +91,9 @@ export const ScheduleForm = ({ form }: FormProps) => {
         <div className="flex flex-col gap-6">
             <div className="grid h-full gap-2">
                 <div className="grid w-fit gap-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input type="date" id="subject" autoComplete="subject" placeholder="Type here" {...register('subject')} />
-                    <InputError message={formState.errors.subject?.message} />
+                    <Label htmlFor="send_at">Send at</Label>
+                    <Input type="date" id="send_at" autoComplete="send_at" placeholder="Type here" {...register('send_at')} />
+                    <InputError message={formState.errors.send_at?.message} />
                 </div>
             </div>
         </div>

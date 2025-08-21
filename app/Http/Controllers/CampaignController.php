@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CampaignStoreRequest;
 use App\Models\Campaign;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -38,9 +39,13 @@ class CampaignController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CampaignStoreRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        Campaign::create($validated);
+
+        return redirect()->route('campaigns.index')->with('success', 'Campaign created successfully.');
     }
 
     /**

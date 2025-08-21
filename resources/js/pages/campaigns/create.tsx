@@ -6,7 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import { ManageCampaignInfer, ManageCampaignSchema } from '@/schemas/campaign';
 import { BreadcrumbItem } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm as inertiaUseForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -24,6 +24,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Create() {
     const [step, setStep] = useState<'setup' | 'body' | 'schedule'>('setup');
 
+    const { post, transform, data } = inertiaUseForm<ManageCampaignInfer>();
+
     const form = useForm<ManageCampaignInfer>({
         resolver: zodResolver(ManageCampaignSchema),
         mode: 'onSubmit',
@@ -32,6 +34,7 @@ export default function Create() {
             subject: '',
             email_list_id: '',
             email_template_id: '',
+            body: '',
         },
     });
 
@@ -59,7 +62,18 @@ export default function Create() {
         }
 
         if (step === 'schedule') {
-            form.handleSubmit((data) => console.log('Form submitted', data))();
+            const isValidated = await form.trigger('send_at');
+
+            if (!isValidated) {
+                return;
+            }
+
+            transform(() => ({
+                ...data,
+                ...form.watch(),
+            }));
+
+            post(route('campaigns.store'));
 
             return;
         }
