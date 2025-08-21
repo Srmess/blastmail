@@ -10,6 +10,8 @@ Route::middleware('auth')->group(function () {
     Route::post('email-list/store', [EmailListController::class, 'store'])->name('email-list.store');
     Route::delete('email-list/{emailList}', [EmailListController::class, 'destroy'])->name('email-list.destroy');
 
+    Route::get('email-list/{emailList}/json', [EmailListController::class, 'get'])->name('email-list.get');
+
     Route::get('email-list/{emailList}/subscribers', [SubscriberController::class, 'index'])->name('subscribers.index');
     Route::get('email-list/{emailList}/subscribers/create', [SubscriberController::class, 'create'])->name('subscribers.create');
     Route::post('email-list/{emailList}/subscribers/create', [SubscriberController::class, 'store']);

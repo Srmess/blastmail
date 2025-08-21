@@ -8,7 +8,8 @@ import { BreadcrumbItem, EmailList, EmailTemplate } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Head, Link, useForm as inertiaUseForm } from '@inertiajs/react';
 import axios from 'axios';
-import { useState } from 'react';
+import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -29,6 +30,8 @@ type LaravelPageProps = {
 
 export default function Create({ emailLists, emailTemplates }: LaravelPageProps) {
     const [step, setStep] = useState<'setup' | 'body' | 'schedule'>('setup');
+    const [selectedTemplateName, setSelectedTemplateName] = useState('');
+    const [emailAmount, setEmailAmount] = useState(0);
 
     const { post, transform, data } = inertiaUseForm<ManageCampaignInfer>();
 
@@ -48,6 +51,7 @@ export default function Create({ emailLists, emailTemplates }: LaravelPageProps)
             email_list_id: '',
             email_template_id: '',
             body: '',
+            send_at: format(new Date(), 'y-MM-d'),
         },
     });
 
@@ -78,6 +82,12 @@ export default function Create({ emailLists, emailTemplates }: LaravelPageProps)
                 return;
             }
 
+            const emailListId = form.watch('email_list_id');
+
+            if (emailListId) {
+                axios.get(route('email-list.get', emailListId)).then((response) => setEmailAmount(response.data.subscribers_count));
+            }
+
             setStep('schedule');
             return;
         }
@@ -100,6 +110,14 @@ export default function Create({ emailLists, emailTemplates }: LaravelPageProps)
         }
     };
 
+    useEffect(() => {
+        const setSelectedTemplateLabel = emailTemplateOptions.find(({ value }) => {
+            return value === form.watch('email_template_id');
+        })?.label;
+
+        setSelectedTemplateName(setSelectedTemplateLabel || '');
+    }, [form.watch('email_template_id')]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create new Campaigns" />
@@ -113,7 +131,7 @@ export default function Create({ emailLists, emailTemplates }: LaravelPageProps)
                                     <SetupForm form={form} emailListOptions={emailListOptions} emailTemplateOptions={emailTemplateOptions} />
                                 )}
                                 {step === 'body' && <BodyForm form={form} />}
-                                {step === 'schedule' && <ScheduleForm form={form} />}
+                                {step === 'schedule' && <ScheduleForm form={form} emailsAmount={emailAmount} templateName={selectedTemplateName} />}
                             </form>
                         </div>
                         <div className="flex w-full gap-4">

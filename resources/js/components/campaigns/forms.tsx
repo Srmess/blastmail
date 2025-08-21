@@ -1,11 +1,17 @@
 import { ManageCampaignInfer } from '@/schemas/campaign';
+import { usePage } from '@inertiajs/react';
+import { format } from 'date-fns';
+import { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import InputError from '../input-error';
 import { RichTextEditor } from '../rich-text-editor';
+import { Badge } from '../ui/badge';
 import { Checkbox } from '../ui/checkbox';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Separator } from '../ui/separator';
 
 interface FormProps {
     form: UseFormReturn<ManageCampaignInfer>;
@@ -96,17 +102,71 @@ export const BodyForm = ({ form }: FormProps) => {
     );
 };
 
-export const ScheduleForm = ({ form }: FormProps) => {
-    const { register, formState } = form;
+interface ScheduleProps {
+    templateName: string;
+    emailsAmount: number;
+}
+
+export const ScheduleForm = ({ form, emailsAmount, templateName }: FormProps & ScheduleProps) => {
+    const [deliveryDate, setDeliveryDate] = useState<'now' | 'later'>('now');
+    const { register, formState, setValue, watch } = form;
+    const { mailFromAdress } = usePage<{ mailFromAdress: string }>().props;
+
+    const handleChange = (a: string) => {
+        if (a === 'now') {
+            setValue('send_at', format(new Date(), 'y-MM-d'));
+        }
+
+        setDeliveryDate(a as 'now' | 'later');
+    };
 
     return (
         <div className="flex flex-col gap-6">
             <div className="grid h-full gap-2">
-                <div className="grid w-fit gap-2">
-                    <Label htmlFor="send_at">Send at</Label>
-                    <Input type="date" id="send_at" autoComplete="send_at" placeholder="Type here" {...register('send_at')} />
-                    <InputError message={formState.errors.send_at?.message} />
+                <p className="leading-5">
+                    From: <span className="font-semibold">{mailFromAdress}</span>
+                </p>
+                <div className="flex items-center gap-2">
+                    <p className="leading-5">To:</p>
+                    <Badge variant={'outline'} className="rounded-full">
+                        {emailsAmount} Emails
+                    </Badge>
                 </div>
+                <p className="leading-5">
+                    Subject: <span className="font-semibold">{watch('subject')}</span>
+                </p>
+                <p className="leading-5">
+                    Template: <span className="font-semibold">{templateName}</span>
+                </p>
+            </div>
+            <Separator />
+            <div className="grid h-full gap-2">
+                <p className="font-medium">Schedule Delivery</p>
+                <RadioGroup value={deliveryDate} onValueChange={handleChange}>
+                    <div className="flex items-center gap-3">
+                        <RadioGroupItem value="now" id="now" onChange={(a) => console.log(a)} />
+                        <Label htmlFor="now">Send Now</Label>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <RadioGroupItem value="later" id="later" />
+                        <Label htmlFor="later">Send Later</Label>
+                    </div>
+                </RadioGroup>
+
+                {deliveryDate === 'later' && (
+                    <div className="grid w-fit gap-2">
+                        <Label htmlFor="send_at">Send at</Label>
+                        <Input
+                            type="date"
+                            id="send_at"
+                            autoComplete="send_at"
+                            placeholder="Type here"
+                            min={format(new Date(), 'y-MM-d')}
+                            {...register('send_at')}
+                        />
+                        <InputError message={formState.errors.send_at?.message} />
+                    </div>
+                )}
             </div>
         </div>
     );

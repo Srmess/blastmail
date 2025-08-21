@@ -85,12 +85,11 @@ class EmailListController extends Controller
         return $items;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(EmailList $emailList)
+    public function get(EmailList $emailList)
     {
-        //
+        $emailList->loadCount('subscribers');
+
+        return response()->json($emailList);
     }
 
     /**
