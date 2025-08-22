@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('subject');
             $table->foreignId('email_list_id')->constrained();
-            $table->foreignId('email_template_id')->constrained();
+            $table->foreignId('email_template_id')->nullable()->constrained();
             $table->boolean('track_click')->default(false);
             $table->boolean('track_open')->default(false);
             $table->text('body')->nullable(false);
