@@ -62,7 +62,8 @@ class CampaignController extends Controller
      */
     public function show(Campaign $campaign)
     {
-        //
+
+        return Inertia::render('campaigns/show', compact('campaign'));
     }
 
     /**
