@@ -1,9 +1,9 @@
-import { ShowTabList, TabContentLayout } from '@/components/campaigns/show-tab-list';
-import { MetricsTabContent } from '@/components/campaigns/tabs/metrics';
+import { ShowTabList } from '@/components/campaigns/show-tab-list';
 import { Tabs } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, Campaign } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
+import { ReactNode } from 'react';
 
 const getDinamicBreadcrumbs = ({ campaignName, campaignId }: { campaignName: string; campaignId: number }) => {
     return [
@@ -23,7 +23,7 @@ type LaravelPageProps = {
     search: string;
 };
 
-export default function Show() {
+export default function CampaignLayout({ children }: { children: ReactNode }) {
     const { props, url } = usePage<LaravelPageProps>();
 
     const { campaign } = props;
@@ -34,9 +34,7 @@ export default function Show() {
             <div className="flex h-full w-full justify-center py-10">
                 <Tabs defaultValue="metrics" value={url.split('/').at(3)} className="w-full max-w-[1000px]">
                     <ShowTabList />
-                    <MetricsTabContent />
-                    <TabContentLayout tab="open">Open</TabContentLayout>
-                    <TabContentLayout tab="clicked">Clicked</TabContentLayout>
+                    {children}
                 </Tabs>
             </div>
         </AppLayout>

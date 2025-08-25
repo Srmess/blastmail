@@ -60,10 +60,13 @@ class CampaignController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Campaign $campaign)
+    public function show(Campaign $campaign, ?string $tab = null)
     {
+        $tab = $tab ?: 'metrics';
 
-        return Inertia::render('campaigns/show', compact('campaign'));
+        abort_unless(in_array($tab, ['metrics', 'open', 'clicked']), 404);
+
+        return Inertia::render('campaigns/tabs/' . $tab, compact('campaign'));
     }
 
     /**

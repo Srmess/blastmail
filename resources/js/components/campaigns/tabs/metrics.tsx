@@ -1,5 +1,5 @@
-import { KPICard } from '../globals/kpi-card';
-import { TabContentLayout } from './show-tab-list';
+import { KPICard } from '../../globals/kpi-card';
+import { TabContentLayout } from '../show-tab-list';
 
 export const MetricsTabContent = () => {
     return (
