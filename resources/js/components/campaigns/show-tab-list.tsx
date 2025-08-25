@@ -45,7 +45,7 @@ export const ShowTabList = () => {
 export const TabContentLayout = ({ children, tab }: { children: ReactNode; tab: string }) => {
     return (
         <TabsContent value={tab}>
-            <Card className="bg-muted px-6">{children}</Card>
+            <Card className="px-6">{children}</Card>
         </TabsContent>
     );
 };

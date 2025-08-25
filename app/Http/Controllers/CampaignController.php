@@ -62,11 +62,13 @@ class CampaignController extends Controller
      */
     public function show(Campaign $campaign, ?string $tab = null)
     {
+        $search = request()->search;
+
         $tab = $tab ?: 'metrics';
 
         abort_unless(in_array($tab, ['metrics', 'open', 'clicked']), 404);
 
-        return Inertia::render('campaigns/tabs/' . $tab, compact('campaign'));
+        return Inertia::render('campaigns/tabs/' . $tab, compact('campaign', 'search'));
     }
 
     /**
