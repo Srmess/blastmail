@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CampaignStoreRequest;
+use App\Jobs\SendEmailCampaign;
 use App\Models\Campaign;
 use App\Models\EmailList;
 use App\Models\EmailTemplate;
@@ -49,7 +50,9 @@ class CampaignController extends Controller
     {
         $validated = $request->validated();
 
-        Campaign::create($validated);
+        $campaign = Campaign::create($validated);
+
+        SendEmailCampaign::dispatchAfterResponse($campaign);
 
         return redirect()->route('campaigns.index')->with('success', 'Campaign created successfully.');
     }
