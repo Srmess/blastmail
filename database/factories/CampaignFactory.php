@@ -30,6 +30,7 @@ class CampaignFactory extends Factory
             'created_at' => fake()->dateTimeBetween('-1 month', 'now'),
             'updated_at' => fake()->dateTimeBetween('-1 month', 'now'),
             'deleted_at' => fake()->boolean() ? fake()->dateTimeBetween('-1 month', 'now') : null,
+            'send_at' => fake()->dateTime()
         ];
     }
 }
