@@ -102,3 +102,45 @@ export interface Campaign {
     emailList?: EmailList;
     emailTemplate?: EmailTemplate;
 }
+
+export interface Campaign {
+    id: number;
+    email_list_id: number;
+    email_template_id: number;
+
+    name: string;
+    name: string;
+    subject: string;
+    track_click: boolean;
+    track_open: boolean;
+    body: string;
+    created_at: Date;
+    updated_at: Date;
+    deleted_at?: Date;
+
+    emailList?: EmailList;
+    emailTemplate?: EmailTemplate;
+}
+
+export interface CampaignMetrics {
+    total_clicks: number;
+    total_openings: number;
+    total_subscribers: number;
+    unique_clicks: number;
+    unique_clicks_rate: number;
+    unique_openings: number;
+    unique_openings_rate: number;
+}
+
+export interface CampaignMail {
+    id: number;
+    campaign_id: number;
+    subscriber_id: number;
+    clicks: number;
+    openings: number;
+    subscriber: Subscriber;
+
+    created_at: Date;
+    sent_at: Date;
+    updated_at: Date;
+}

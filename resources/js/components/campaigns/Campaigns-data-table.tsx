@@ -1,5 +1,5 @@
 import { Campaign, Pagination } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Trash2 } from 'lucide-react';
 import { PaginationComponent } from '../paginate-component';
@@ -14,6 +14,9 @@ const columns: ColumnDef<Campaign>[] = [
     {
         accessorKey: 'name',
         header: 'Name',
+        cell: ({ row }) => {
+            return <Link href={route('campaigns.dashboard', row.original.id)}>{row.getValue('name')}</Link>;
+        },
     },
     {
         accessorKey: 'actions',

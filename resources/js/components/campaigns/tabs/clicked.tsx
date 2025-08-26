@@ -1,19 +1,25 @@
 import { PaginationComponent } from '@/components/paginate-component';
 import { DataTable } from '@/components/table-component';
 import { Input } from '@/components/ui/input';
-import { Campaign, Subscriber } from '@/types';
+import { Campaign, CampaignMail, Pagination } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { TabContentLayout } from '../show-tab-list';
 
-const columns: ColumnDef<Subscriber & { clicks: string }>[] = [
+const columns: ColumnDef<CampaignMail>[] = [
     {
         accessorKey: 'name',
         header: 'Name',
+        cell: ({ row }) => {
+            return row.original.subscriber.name;
+        },
     },
     {
         accessorKey: 'email',
         header: 'Email',
+        cell: ({ row }) => {
+            return row.original.subscriber.email;
+        },
     },
     {
         accessorKey: 'clicks',
@@ -23,12 +29,13 @@ const columns: ColumnDef<Subscriber & { clicks: string }>[] = [
 
 type LaravelPageProps = {
     campaign: Campaign;
+    query: Pagination<CampaignMail>;
     search: string;
 };
 
 export const ClickedTabContent = () => {
     const { props } = usePage<LaravelPageProps>();
-    const { search, campaign } = props;
+    const { search, campaign, query } = props;
 
     return (
         <TabContentLayout tab="clicked">
@@ -37,8 +44,8 @@ export const ClickedTabContent = () => {
                 <Input name="search" placeholder="Search..." className="max-w-80" defaultValue={search} />
             </form>
             <div className="flex flex-col gap-6">
-                <DataTable columns={columns} data={[{ id: 1, name: 'Marcos Vinícius', email: 'teste@teste.com', clicks: '40' }]} />
-                <PaginationComponent links={[]} />
+                <DataTable columns={columns} data={query.data} />
+                <PaginationComponent links={query.links} />
             </div>
         </TabContentLayout>
     );

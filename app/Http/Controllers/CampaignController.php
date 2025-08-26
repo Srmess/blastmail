@@ -68,7 +68,18 @@ class CampaignController extends Controller
 
         abort_unless(in_array($tab, ['metrics', 'open', 'clicked']), 404);
 
-        return Inertia::render('campaigns/tabs/' . $tab, compact('campaign', 'search'));
+        $query = $campaign->mails()
+            ->when($tab === 'metrics', fn(Builder $query) => $query->statistics())
+            ->when($tab === 'open', fn(Builder $query) => $query->openings($search))
+            ->when($tab === 'clicked', fn(Builder $query) => $query->clicks($search))
+            ->paginate(12)->appends(compact('search'));
+
+        if ($tab === 'metrics') {
+            $query = $query->first();
+        }
+
+
+        return Inertia::render('campaigns/tabs/' . $tab, compact('campaign', 'search', 'query'));
     }
 
     /**
