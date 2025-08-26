@@ -4,9 +4,15 @@ use App\Http\Controllers\TrackingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+// Route::get('/email', function () {
+//     $campagn = Campaign::find(25);
+//     $mail = $campagn->mails()->first();
+
+
+//     $email = new EmailCampaign($campagn, $mail);
+
+//     return $email->render();
+// });
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -15,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('tracking/{mail}/opnening', [TrackingController::class, 'opening'])->name('track.opening');
+Route::get('tracking/{mail}/clicks', [TrackingController::class, 'click'])->name('track.click');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/email-list.php';

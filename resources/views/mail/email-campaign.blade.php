@@ -1,5 +1,5 @@
 <x-mail::message>
-{!! $campaign->body !!}
+{!! $body !!}
 
 <img src="{{ route('track.opening', $mail) }}" style="display:none;" />
 </x-mail::message>
