@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TrackingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -12,6 +13,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 });
+
+Route::get('tracking/{mail}/opnening', [TrackingController::class, 'opening'])->name('track.opening');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/email-list.php';
