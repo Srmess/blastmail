@@ -2,23 +2,8 @@
 
 use App\Http\Controllers\TrackingController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-// Route::get('/email', function () {
-//     $campagn = Campaign::find(25);
-//     $mail = $campagn->mails()->first();
-
-
-//     $email = new EmailCampaign($campagn, $mail);
-
-//     return $email->render();
-// });
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
-});
+Route::redirect('/', 'campaigns');
 
 Route::get('tracking/{mail}/opnening', [TrackingController::class, 'opening'])->name('track.opening');
 Route::get('tracking/{mail}/clicks', [TrackingController::class, 'click'])->name('track.click');
